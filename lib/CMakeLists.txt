@@ -1,10 +1,11 @@
-set(ASSIGNMENT_4_PLUGINS HelloWorld OpcodeCounter ArithmeticSimplifier CFGPrinter FunctionCallCounter)
+set(ASSIGNMENT_4_PLUGINS HelloWorld OpcodeCounter ArithmeticSimplifier CFGPrinter FunctionCallCounter InstructionReplacer)
 
 set(HelloWorld_SOURCES HelloWorld.cpp)
 set(OpcodeCounter_SOURCES OpcodeCounter.cpp)
 set(ArithmeticSimplifier_SOURCES ArithmeticSimplifier.cpp)
 set(CFGPrinter_SOURCES CFGPrinter.cpp)
 set(FunctionCallCounter_SOURCES FunctionCallCounter.cpp)
+set(InstructionReplacer_SOURCES InstructionReplacer.cpp)
 
 foreach(plugin ${ASSIGNMENT_4_PLUGINS})
   # Create a library corresponding to 'plugin'
