@@ -1,0 +1,23 @@
+digraph G {
+    subgraph cluster_while_with_break {
+        label = "while_with_break";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %2, align 4\n  store i32 0, ptr %3, align 4\n  br label %4"];
+        node1 [label="BB1\n  %5 = load i32, ptr %3, align 4\n  %6 = load i32, ptr %2, align 4\n  %7 = icmp slt i32 %5, %6\n  br i1 %7, label %8, label %15"];
+        node2 [label="BB2\n  %9 = load i32, ptr %3, align 4\n  %10 = icmp eq i32 %9, 5\n  br i1 %10, label %11, label %12"];
+        node5 [label="BB5\n  %16 = load i32, ptr %3, align 4\n  ret i32 %16"];
+        node3 [label="BB3\n  br label %15"];
+        node4 [label="BB4\n  %13 = load i32, ptr %3, align 4\n  %14 = add nsw i32 %13, 1\n  store i32 %14, ptr %3, align 4\n  br label %4, !llvm.loop !6"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1;
+    node1 -> node2 [label="true"];
+    node1 -> node5 [label="false"];
+    node2 -> node3 [label="true"];
+    node2 -> node4 [label="false"];
+    node5 -> EXIT;
+    node3 -> node5;
+    node4 -> node1;
+}

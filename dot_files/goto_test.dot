@@ -1,0 +1,20 @@
+digraph G {
+    subgraph cluster_goto_test {
+        label = "goto_test";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %3, align 4\n  %4 = load i32, ptr %3, align 4\n  %5 = icmp slt i32 %4, 0\n  br i1 %5, label %6, label %7"];
+        node1 [label="BB1\n  br label %9"];
+        node2 [label="BB2\n  %8 = load i32, ptr %3, align 4\n  store i32 %8, ptr %2, align 4\n  br label %12"];
+        node3 [label="BB3\n  %10 = load i32, ptr %3, align 4\n  %11 = sub nsw i32 0, %10\n  store i32 %11, ptr %2, align 4\n  br label %12"];
+        node4 [label="BB4\n  %13 = load i32, ptr %2, align 4\n  ret i32 %13"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1 [label="true"];
+    node0 -> node2 [label="false"];
+    node1 -> node3;
+    node2 -> node4;
+    node3 -> node4;
+    node4 -> EXIT;
+}

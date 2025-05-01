@@ -1,0 +1,11 @@
+digraph G {
+    subgraph cluster_empty_function {
+        label = "empty_function";
+        node [shape=box];
+        node0 [label="BB0\n  ret void"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> EXIT;
+}

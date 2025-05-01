@@ -1,0 +1,11 @@
+digraph G {
+    subgraph cluster_linear_flow {
+        label = "linear_flow";
+        node [shape=box];
+        node0 [label="BB0\n  %1 = alloca i32, align 4\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 1, ptr %1, align 4\n  store i32 2, ptr %2, align 4\n  %4 = load i32, ptr %1, align 4\n  %5 = load i32, ptr %2, align 4\n  %6 = add nsw i32 %4, %5\n  store i32 %6, ptr %3, align 4\n  %7 = load i32, ptr %3, align 4\n  ret i32 %7"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> EXIT;
+}

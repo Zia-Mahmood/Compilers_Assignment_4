@@ -1,0 +1,3 @@
+digraph "foo" {
+  node0 [shape=record, label="BB0"];
+}

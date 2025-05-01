@@ -1,0 +1,23 @@
+digraph G {
+    subgraph cluster_nested_conditional {
+        label = "nested_conditional";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %3, align 4\n  %4 = load i32, ptr %3, align 4\n  %5 = icmp sgt i32 %4, 0\n  br i1 %5, label %6, label %11"];
+        node1 [label="BB1\n  %7 = load i32, ptr %3, align 4\n  %8 = icmp sgt i32 %7, 10\n  br i1 %8, label %9, label %10"];
+        node4 [label="BB4\n  store i32 0, ptr %2, align 4\n  br label %12"];
+        node2 [label="BB2\n  store i32 2, ptr %2, align 4\n  br label %12"];
+        node3 [label="BB3\n  store i32 1, ptr %2, align 4\n  br label %12"];
+        node5 [label="BB5\n  %13 = load i32, ptr %2, align 4\n  ret i32 %13"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1 [label="true"];
+    node0 -> node4 [label="false"];
+    node1 -> node2 [label="true"];
+    node1 -> node3 [label="false"];
+    node4 -> node5;
+    node2 -> node5;
+    node3 -> node5;
+    node5 -> EXIT;
+}

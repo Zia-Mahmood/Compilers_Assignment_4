@@ -1,0 +1,13 @@
+digraph G {
+    subgraph cluster_infinite_loop {
+        label = "infinite_loop";
+        node [shape=box];
+        node0 [label="BB0\n  %1 = alloca i32, align 4\n  br label %2"];
+        node1 [label="BB1\n  store i32 1, ptr %1, align 4\n  br label %2"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1;
+    node1 -> node1;
+}

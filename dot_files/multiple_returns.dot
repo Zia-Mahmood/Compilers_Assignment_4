@@ -1,0 +1,23 @@
+digraph G {
+    subgraph cluster_multiple_returns {
+        label = "multiple_returns";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %3, align 4\n  %4 = load i32, ptr %3, align 4\n  %5 = icmp slt i32 %4, 0\n  br i1 %5, label %6, label %7"];
+        node1 [label="BB1\n  store i32 -1, ptr %2, align 4\n  br label %12"];
+        node2 [label="BB2\n  %8 = load i32, ptr %3, align 4\n  %9 = icmp eq i32 %8, 0\n  br i1 %9, label %10, label %11"];
+        node5 [label="BB5\n  %13 = load i32, ptr %2, align 4\n  ret i32 %13"];
+        node3 [label="BB3\n  store i32 0, ptr %2, align 4\n  br label %12"];
+        node4 [label="BB4\n  store i32 1, ptr %2, align 4\n  br label %12"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1 [label="true"];
+    node0 -> node2 [label="false"];
+    node1 -> node5;
+    node2 -> node3 [label="true"];
+    node2 -> node4 [label="false"];
+    node5 -> EXIT;
+    node3 -> node5;
+    node4 -> node5;
+}

@@ -1,0 +1,3 @@
+digraph "fez" {
+  node0 [shape=record, label="BB0"];
+}

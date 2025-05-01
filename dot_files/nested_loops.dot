@@ -1,0 +1,29 @@
+digraph G {
+    subgraph cluster_nested_loops {
+        label = "nested_loops";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  %4 = alloca i32, align 4\n  %5 = alloca i32, align 4\n  store i32 %0, ptr %2, align 4\n  store i32 0, ptr %3, align 4\n  store i32 0, ptr %4, align 4\n  br label %6"];
+        node1 [label="BB1\n  %7 = load i32, ptr %4, align 4\n  %8 = load i32, ptr %2, align 4\n  %9 = icmp slt i32 %7, %8\n  br i1 %9, label %10, label %28"];
+        node2 [label="BB2\n  store i32 0, ptr %5, align 4\n  br label %11"];
+        node8 [label="BB8\n  %29 = load i32, ptr %3, align 4\n  ret i32 %29"];
+        node3 [label="BB3\n  %12 = load i32, ptr %5, align 4\n  %13 = load i32, ptr %2, align 4\n  %14 = icmp slt i32 %12, %13\n  br i1 %14, label %15, label %24"];
+        node4 [label="BB4\n  %16 = load i32, ptr %4, align 4\n  %17 = load i32, ptr %5, align 4\n  %18 = add nsw i32 %16, %17\n  %19 = load i32, ptr %3, align 4\n  %20 = add nsw i32 %19, %18\n  store i32 %20, ptr %3, align 4\n  br label %21"];
+        node6 [label="BB6\n  br label %25"];
+        node5 [label="BB5\n  %22 = load i32, ptr %5, align 4\n  %23 = add nsw i32 %22, 1\n  store i32 %23, ptr %5, align 4\n  br label %11, !llvm.loop !6"];
+        node7 [label="BB7\n  %26 = load i32, ptr %4, align 4\n  %27 = add nsw i32 %26, 1\n  store i32 %27, ptr %4, align 4\n  br label %6, !llvm.loop !8"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1;
+    node1 -> node2 [label="true"];
+    node1 -> node8 [label="false"];
+    node2 -> node3;
+    node8 -> EXIT;
+    node3 -> node4 [label="true"];
+    node3 -> node6 [label="false"];
+    node4 -> node5;
+    node6 -> node7;
+    node5 -> node3;
+    node7 -> node1;
+}

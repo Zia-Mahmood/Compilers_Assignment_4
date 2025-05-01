@@ -1,0 +1,24 @@
+digraph G {
+    subgraph cluster_switch_case {
+        label = "switch_case";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %3, align 4\n  %4 = load i32, ptr %3, align 4\n  switch i32 %4, label %8 [
+    i32 1, label %5
+    i32 2, label %6
+    i32 3, label %7
+  ]"];
+        node4 [label="BB4\n  store i32 0, ptr %2, align 4\n  br label %9"];
+        node1 [label="BB1\n  store i32 1, ptr %2, align 4\n  br label %9"];
+        node2 [label="BB2\n  store i32 2, ptr %2, align 4\n  br label %9"];
+        node3 [label="BB3\n  store i32 3, ptr %2, align 4\n  br label %9"];
+        node5 [label="BB5\n  %10 = load i32, ptr %2, align 4\n  ret i32 %10"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node4 -> node5;
+    node1 -> node5;
+    node2 -> node5;
+    node3 -> node5;
+    node5 -> EXIT;
+}

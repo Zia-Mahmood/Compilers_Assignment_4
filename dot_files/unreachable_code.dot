@@ -1,0 +1,11 @@
+digraph G {
+    subgraph cluster_unreachable_code {
+        label = "unreachable_code";
+        node [shape=box];
+        node0 [label="BB0\n  %1 = alloca i32, align 4\n  ret i32 42"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> EXIT;
+}

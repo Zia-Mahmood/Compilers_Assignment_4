@@ -1,0 +1,18 @@
+digraph G {
+    subgraph cluster_recursive {
+        label = "recursive";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  store i32 %0, ptr %3, align 4\n  %4 = load i32, ptr %3, align 4\n  %5 = icmp sle i32 %4, 1\n  br i1 %5, label %6, label %8"];
+        node1 [label="BB1\n  %7 = load i32, ptr %3, align 4\n  store i32 %7, ptr %2, align 4\n  br label %14"];
+        node2 [label="BB2\n  %9 = load i32, ptr %3, align 4\n  %10 = sub nsw i32 %9, 1\n  %11 = call i32 @recursive(i32 noundef %10)\n  %12 = load i32, ptr %3, align 4\n  %13 = add nsw i32 %11, %12\n  store i32 %13, ptr %2, align 4\n  br label %14"];
+        node3 [label="BB3\n  %15 = load i32, ptr %2, align 4\n  ret i32 %15"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1 [label="true"];
+    node0 -> node2 [label="false"];
+    node1 -> node3;
+    node2 -> node3;
+    node3 -> EXIT;
+}

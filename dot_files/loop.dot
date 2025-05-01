@@ -1,0 +1,20 @@
+digraph G {
+    subgraph cluster_loop {
+        label = "loop";
+        node [shape=box];
+        node0 [label="BB0\n  %2 = alloca i32, align 4\n  %3 = alloca i32, align 4\n  %4 = alloca i32, align 4\n  store i32 %0, ptr %2, align 4\n  store i32 0, ptr %3, align 4\n  store i32 0, ptr %4, align 4\n  br label %5"];
+        node1 [label="BB1\n  %6 = load i32, ptr %4, align 4\n  %7 = load i32, ptr %2, align 4\n  %8 = icmp slt i32 %6, %7\n  br i1 %8, label %9, label %16"];
+        node2 [label="BB2\n  %10 = load i32, ptr %4, align 4\n  %11 = load i32, ptr %3, align 4\n  %12 = add nsw i32 %11, %10\n  store i32 %12, ptr %3, align 4\n  br label %13"];
+        node4 [label="BB4\n  %17 = load i32, ptr %3, align 4\n  ret i32 %17"];
+        node3 [label="BB3\n  %14 = load i32, ptr %4, align 4\n  %15 = add nsw i32 %14, 1\n  store i32 %15, ptr %4, align 4\n  br label %5, !llvm.loop !6"];
+        ENTRY [label="ENTRY", shape=ellipse];
+        EXIT [label="EXIT", shape=ellipse];
+    }
+    ENTRY -> node0;
+    node0 -> node1;
+    node1 -> node2 [label="true"];
+    node1 -> node4 [label="false"];
+    node2 -> node3;
+    node4 -> EXIT;
+    node3 -> node1;
+}
